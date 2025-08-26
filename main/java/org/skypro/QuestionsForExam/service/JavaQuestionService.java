@@ -5,6 +5,7 @@ import org.skypro.QuestionsForExam.domain.QuestionService;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class JavaQuestionService implements QuestionService {
@@ -36,11 +37,8 @@ public class JavaQuestionService implements QuestionService {
     }
     @Override
     public Question getRandomQuestion() {
-        List<String> list = List.of("");
-        Random random = new Random();
-        int randomIndex = random.nextInt(list.size());
-        String randomElement = list.get(randomIndex);
-        System.out.println(randomElement);
-        return null;
+        int randomNumber = ThreadLocalRandom.current().nextInt(0, questions.size());
+        List<Question> questionssList = new ArrayList<>(questions);
+        return questionssList.get(randomNumber);
     }
 }

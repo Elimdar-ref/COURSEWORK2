@@ -12,12 +12,11 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @Service
 public class ExaminerServiceImpl implements ExaminerService {
 
-    private final Random random;
+    private Random random;
 
     private final QuestionService questionService;
 
-    public ExaminerServiceImpl(Random random, QuestionService questionService) {
-        this.random = random;
+    public ExaminerServiceImpl(QuestionService questionService) {
         this.questionService = questionService;
         question();
     }
@@ -38,6 +37,11 @@ public class ExaminerServiceImpl implements ExaminerService {
         if (questionService.getAll().size() < amount) {
             throw new QuestionIllegalArgumentException(BAD_REQUEST);
         }
-        return List.of();
+        Set<Question> randomQuestions = new HashSet<>();
+        Random random = new Random();
+        while (randomQuestions.size() < amount) {
+             randomQuestions.add(questionService.getRandomQuestion());
+    }
+        return randomQuestions;
     }
 }
