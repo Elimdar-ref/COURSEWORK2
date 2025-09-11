@@ -18,30 +18,19 @@ public class ExaminerServiceImpl implements ExaminerService {
 
     public ExaminerServiceImpl(QuestionService questionService) {
         this.questionService = questionService;
-        question();
-    }
-
-    private void question() {
-
-        Set<String> questions = new HashSet<>();
-        questions.add("Какой язык программирования вы используете?");
-        questions.add("Что такое ООП?");
-        questions.add("Как работает сортировка пузырьком?");
-        questions.add("Что такое рекурсия?");
-        questions.add("Как использовать HashMap?");
-
     }
 
     @Override
     public Collection<Question> getQuestions(int amount) {
-        if (questionService.getAll().size() < amount) {
+        Collection<Question> allQuestions = questionService.getAllQuestions();
+        if (allQuestions.size() < amount) {
             throw new QuestionIllegalArgumentException(BAD_REQUEST);
         }
         Set<Question> randomQuestions = new HashSet<>();
-        Random random = new Random();
         while (randomQuestions.size() < amount) {
-             randomQuestions.add(questionService.getRandomQuestion());
-    }
+            Question randomQuestion = questionService.getRandomQuestion();
+            randomQuestions.add(randomQuestion);
+        }
         return randomQuestions;
     }
 }
